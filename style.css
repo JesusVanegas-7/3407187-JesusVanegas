@@ -1,0 +1,303 @@
+/* ================================
+   RESET + VARIABLES
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+:root {
+  --bg-color: #f4f6f8;
+  --card-bg: #ffffff;
+  --text-color: #222;
+  --text-muted: #666;
+  --primary: #3b82f6;
+  --secondary: #10b981;
+  --border-color: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-color: #f1f5f9;
+  --text-muted: #94a3b8;
+  --primary: #60a5fa;
+  --secondary: #34d399;
+  --border-color: #334155;
+}
+
+/* ================================
+   BODY + CONTAINER
+================================ */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ================================
+   CARD
+================================ */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ================================
+   HEADER
+================================ */
+.card-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+}
+
+.header-info h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.header-info .title {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.header-info .location {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ================================
+   SECTIONS
+================================ */
+.card-section {
+  margin-bottom: 2rem;
+}
+
+.card-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+/* ================================
+   CONTACT
+================================ */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contact-item .icon {
+  font-size: 1.2rem;
+}
+
+/* ================================
+   ITEMS / SKILLS
+================================ */
+#valuation-factors,
+.skills-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.item {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+[data-theme="dark"] .item {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.item-name {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.item-level {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.level-bar {
+  flex: 1;
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.level-fill {
+  height: 100%;
+  background-color: var(--secondary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* ================================
+   LINKS
+================================ */
+#links-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-link {
+  text-decoration: none;
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.app-link:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* ================================
+   STATS
+================================ */
+#stats-container,
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.stat-item {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+[data-theme="dark"] .stat-item {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ================================
+   BUTTONS
+================================ */
+button {
+  cursor: pointer;
+  border: none;
+}
+
+.btn {
+  background-color: var(--primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+}
+
+.btn-small {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+}
+
+/* ================================
+   THEME TOGGLE
+================================ */
+.theme-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  background-color: var(--card-bg);
+  border-radius: 50%;
+  padding: 0.6rem;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================
+   FOOTER
+================================ */
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ================================
+   TOAST
+================================ */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateY(10px);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================================
+   TOGGLE MOSTRAR MÁS / MENOS
+================================ */
+.item.hidden {
+  display: none;
+}

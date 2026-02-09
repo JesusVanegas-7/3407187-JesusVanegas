@@ -266,26 +266,29 @@ const showToast = message => {
     toast.classList.remove('show');
   }, 3000);
 };
-
+ 
 // ============================================
 // TODO 9: Funcionalidad de mostrar / ocultar items
 // ============================================
 // Controla la visualización de los factores de valuación
 
-let showingAllItems = false;
+let itemsExpanded = false;
 
-const handleToggleItems = () => {
-  // Alternar el estado de visualización
-  showingAllItems = !showingAllItems;
+function handleToggleItems() {
+  const items = document.querySelectorAll('#valuation-factors .item');
 
-  // Renderizar los items según el estado actual
-  renderItems(showingAllItems);
+  items.forEach((item, index) => {
+    if (index >= 3) {
+      item.classList.toggle('hidden', !itemsExpanded);
+    }
+  });
 
-  // Actualizar el texto del botón
-  toggleItemsBtn.textContent = showingAllItems
+  itemsExpanded = !itemsExpanded;
+
+  toggleItemsBtn.textContent = itemsExpanded
     ? 'Mostrar menos'
     : 'Mostrar más';
-};
+}
 
 // ============================================
 // TODO 10: Event Listeners
