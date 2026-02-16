@@ -708,27 +708,17 @@ console.log(system.getAllUsers());
 // TODO 7: REFERENCIAS AL DOM
 // ============================================
 
+// Variables globales para el DOM
+let itemForm;
+let itemList;
+let statsContainer;
+let filterType;
+let filterStatus;
+let searchInput;
+
 // Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
-
-  // ============================================
-  // REFERENCIAS A ELEMENTOS DEL DOM
-  // ============================================
-
-  const itemForm = document.getElementById('item-form');
-  const itemList = document.getElementById('item-list');
-  const statsContainer = document.getElementById('stats');
-  const filterType = document.getElementById('filter-type');
-  const filterStatus = document.getElementById('filter-status');
-  const searchInput = document.getElementById('search-input');
-
-  // Validación básica para evitar errores si falta algún elemento
-  if (!itemForm || !itemList || !statsContainer) {
-    console.warn('Algunos elementos del DOM no fueron encontrados.');
-    return;
-  }
-
-  console.log('DOM cargado correctamente');
+  console.log('Estructura DOM cargada');
 });
 
 /**
@@ -955,6 +945,16 @@ const handleItemAction = e => {
  * Inicializa la aplicación
  */
 const init = () => {
+
+  // ============================================
+  // REFERENCIAS A ELEMENTOS DEL DOM
+  // ============================================
+  itemForm = document.getElementById('item-form');
+  itemList = document.getElementById('item-list');
+  statsContainer = document.getElementById('stats');
+  filterType = document.getElementById('filter-type');
+  filterStatus = document.getElementById('filter-status');
+  searchInput = document.getElementById('search-input');
 
   // Verificar que los elementos existan
   if (!itemForm || !itemList || !statsContainer) {
