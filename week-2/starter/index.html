@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valuación de Inmuebles | Gestor Profesional</title>
+    <link rel="stylesheet" href="../starter/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏢 Valuación de Inmuebles</h1>
+            <p>Gestiona y valora tu cartera inmobiliaria con precisión</p>
+        </header>
+
+        <main>
+            <section class="stats-container">
+                <div class="stat-card">
+                    <span class="stat-label">Total</span>
+                    <span id="stat-total" class="stat-value">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Activos</span>
+                    <span id="stat-active" class="stat-value">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Inactivos</span>
+                    <span id="stat-inactive" class="stat-value">0</span>
+                </div>
+                <div class="stats-summary">
+                    <p id="stats-details">Cargando estadísticas...</p>
+                </div>
+            </section>
+
+            <div class="content-grid">
+                <aside class="form-section">
+                    <div class="card">
+                        <h2 id="form-title">➕ Nuevo Inmueble</h2>
+                        <form id="item-form">
+                            <div class="form-group">
+                                <label for="item-name">Nombre del Inmueble</label>
+                                <input type="text" id="item-name" placeholder="Ej: Casa Praderas del Sol" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item-description">Descripción</label>
+                                <textarea id="item-description" placeholder="Detalles adicionales..."></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="item-category">Categoría</label>
+                                    <select id="item-category">
+                                        <option value="house">Casa 🏠</option>
+                                        <option value="apartment">Apartamento 🏢</option>
+                                        <option value="commercial">Local Comercial 🏬</option>
+                                        <option value="land">Terreno 🌄</option>
+                                        <option value="office">Oficina 🏢</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="item-priority">Prioridad</label>
+                                    <select id="item-priority">
+                                        <option value="low">Baja</option>
+                                        <option value="medium" selected>Media</option>
+                                        <option value="high">Alta</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="item-location">Ubicación 📍</label>
+                                <input type="text" id="item-location" placeholder="Ciudad, Barrio...">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="item-area">Área (m²) 📐</label>
+                                    <input type="number" id="item-area" value="0" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="item-price">Precio ($) 💰</label>
+                                    <input type="number" id="item-price" value="0" min="0">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="item-bedrooms">Habitaciones 🛏</label>
+                                    <input type="number" id="item-bedrooms" value="0" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="item-bathrooms">Baños 🚿</label>
+                                    <input type="number" id="item-bathrooms" value="0" min="0">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" id="submit-btn" class="btn btn-primary">Crear</button>
+                                <button type="button" id="cancel-btn" class="btn btn-secondary" style="display: none;">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </aside>
+
+                <section class="list-section">
+                    <div class="controls-card card">
+                        <div class="search-bar">
+                            <input type="text" id="search-input" placeholder="Buscar por nombre o descripción...">
+                        </div>
+                        <div class="filters-row">
+                            <select id="filter-status">
+                                <option value="all">Todos los estados</option>
+                                <option value="active">Activos</option>
+                                <option value="inactive">Inactivos</option>
+                            </select>
+                            <select id="filter-category">
+                                <option value="all">Todas las categorías</option>
+                                <option value="house">Casas</option>
+                                <option value="apartment">Apartamentos</option>
+                                <option value="commercial">Locales Comerciales</option>
+                                <option value="land">Terrenos</option>
+                                <option value="office">Oficinas</option>
+                            </select>
+                            <select id="filter-priority">
+                                <option value="all">Todas las prioridades</option>
+                                <option value="low">Prioridad Baja</option>
+                                <option value="medium">Prioridad Media</option>
+                                <option value="high">Prioridad Alta</option>
+                            </select>
+                            <button id="clear-inactive" class="btn btn-danger">Limpiar Inactivos</button>
+                        </div>
+                    </div>
+
+                    <div id="item-list" class="item-list">
+                        <!-- Los inmuebles se cargarán aquí -->
+                    </div>
+
+                    <div id="empty-state" class="empty-state" style="display: none;">
+                        <div class="empty-icon">🏠</div>
+                        <h3>No hay inmuebles registrados</h3>
+                        <p>Comienza agregando uno en el formulario de la izquierda.</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../starter/script.js"></script>
+</body>
+</html>

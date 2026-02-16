@@ -11,6 +11,17 @@ const CATEGORIES = {
   office: { name: 'Oficina', emoji: '🏢' },
 };
 
+// Prioridades
+const PRIORITIES = {
+  low: { name: 'Baja', color: '#4caf50' },
+  medium: { name: 'Media', color: '#ff9800' },
+  high: { name: 'Alta', color: '#f44336' }
+};
+
+// Estado global
+let items = [];
+let editingItemId = null;
+
 // ============================================
 // TODO 2: PERSISTENCIA (LocalStorage)
 // Dominio: App de Valuación de Inmuebles
@@ -291,6 +302,39 @@ const getStats = (itemsToAnalyze = []) => {
     byCategory,
     byPriority
   };
+};
+
+/**
+ * Obtiene el emoji de una categoría
+ * @param {String} category - Clave de la categoría
+ * @returns {String} Emoji de la categoría
+ */
+const getCategoryEmoji = category => {
+  return CATEGORIES[category]?.emoji ?? '🏠';
+};
+
+/**
+ * Formatea una fecha ISO a formato legible
+ * @param {String} dateString - Fecha en formato ISO
+ * @returns {String} Fecha formateada
+ */
+const formatDate = dateString => {
+  if (!dateString) return 'N/A';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+};
+
+/**
+ * Aplica los filtros actuales y retorna los elementos filtrados
+ * @returns {Array} Elementos filtrados
+ */
+const applyCurrentFilters = () => {
+  const filters = getCurrentFilters();
+  return applyFilters(items, filters);
 };
 
 /**
@@ -610,3 +654,29 @@ const attachEventListeners = () => {
       }
     });
 };
+
+// ============================================
+// TODO 13: INICIALIZACIÓN
+// ============================================
+
+/**
+ * Inicializa la aplicación
+ */
+const init = () => {
+  // Cargar los elementos desde localStorage
+  items = loadItems();
+  
+  // Renderizar la lista inicial
+  renderItems(items);
+  
+  // Renderizar las estadísticas iniciales
+  renderStats(getStats(items));
+  
+  // Adjuntar los event listeners
+  attachEventListeners();
+  
+  console.log('✅ Aplicación de Valuación de Inmuebles inicializada correctamente');
+};
+
+// Ejecutar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', init);
