@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Valuación Inmobiliaria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../starter/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Real Estate Valuation System</h1>
+            <div id="stats" class="stats-grid">
+                <!-- Estadísticas cargadas por JS -->
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="admin-section">
+            <div class="card">
+                <h2>Registrar Inmueble</h2>
+                <form id="item-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Nombre del Inmueble</label>
+                            <input type="text" id="name" name="name" placeholder="Ej: Casa Campestre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Ubicación</label>
+                            <input type="text" id="location" name="location" placeholder="Ej: Medellín, Antioquia" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Tipo</label>
+                            <select id="type" name="type" required>
+                                <option value="House">Casa</option>
+                                <option value="Apartment">Apartamento</option>
+                                <option value="CommercialProperty">Local Comercial</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="area">Área (m²)</label>
+                            <input type="number" id="area" name="area" min="1" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label id="label-extra1" for="extra1">Habitaciones</label>
+                            <input type="number" id="extra1" name="extra1" required>
+                        </div>
+                        <div class="form-group" id="extra2-container">
+                            <label id="label-extra2" for="extra2">¿Tiene Garaje?</label>
+                            <select id="extra2" name="extra2" required>
+                                <option value="true">Sí</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Agregar Inmueble</button>
+                </form>
+            </div>
+
+            <div class="card filters-card">
+                <h2>Filtros y Búsqueda</h2>
+                <div class="filters-grid">
+                    <div class="form-group">
+                        <label for="search-input">Buscar por nombre</label>
+                        <input type="text" id="search-input" placeholder="Buscar...">
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-type">Filtrar por tipo</label>
+                        <select id="filter-type">
+                            <option value="all">Todos los tipos</option>
+                            <option value="House">Casas</option>
+                            <option value="Apartment">Apartamentos</option>
+                            <option value="CommercialProperty">Locales</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-status">Estado</label>
+                        <select id="filter-status">
+                            <option value="all">Todos</option>
+                            <option value="active">Activos</option>
+                            <option value="inactive">Inactivos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="list-section">
+            <h2>Inventario de Inmuebles</h2>
+            <div id="item-list" class="items-grid">
+                <!-- Inmuebles cargados por JS -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const typeSelect = document.getElementById('type');
+            const labelExtra1 = document.getElementById('label-extra1');
+            const labelExtra2 = document.getElementById('label-extra2');
+            const inputExtra1 = document.getElementById('extra1');
+            const extra2Container = document.getElementById('extra2-container');
+
+            const updateFields = () => {
+                const type = typeSelect.value;
+                const currentExtra2 = document.getElementById('extra2');
+                
+                if (type === 'House') {
+                    labelExtra1.textContent = 'Habitaciones';
+                    inputExtra1.type = 'number';
+                    inputExtra1.placeholder = 'Ej: 3';
+                    labelExtra2.textContent = '¿Tiene Garaje?';
+                    renderSelectExtra2(currentExtra2, [['true', 'Sí'], ['false', 'No']]);
+                } else if (type === 'Apartment') {
+                    labelExtra1.textContent = 'Piso';
+                    inputExtra1.type = 'number';
+                    inputExtra1.placeholder = 'Ej: 5';
+                    labelExtra2.textContent = '¿Tiene Ascensor?';
+                    renderSelectExtra2(currentExtra2, [['true', 'Sí'], ['false', 'No']]);
+                } else if (type === 'CommercialProperty') {
+                    labelExtra1.textContent = 'Tipo de Negocio';
+                    inputExtra1.type = 'text';
+                    inputExtra1.placeholder = 'Ej: Restaurante';
+                    labelExtra2.textContent = 'Puestos de Parqueo';
+                    renderInputExtra2(currentExtra2, 'number', 'Ej: 5');
+                }
+            };
+
+            const renderSelectExtra2 = (el, options) => {
+                if (el.tagName === 'SELECT') {
+                    el.innerHTML = options.map(opt => `<option value="${opt[0]}">${opt[1]}</option>`).join('');
+                    return;
+                }
+                const select = document.createElement('select');
+                select.id = 'extra2';
+                select.name = 'extra2';
+                select.required = true;
+                select.innerHTML = options.map(opt => `<option value="${opt[0]}">${opt[1]}</option>`).join('');
+                el.replaceWith(select);
+            };
+
+            const renderInputExtra2 = (el, type, placeholder) => {
+                if (el.tagName === 'INPUT') {
+                    el.type = type;
+                    el.placeholder = placeholder;
+                    return;
+                }
+                const input = document.createElement('input');
+                input.id = 'extra2';
+                input.name = 'extra2';
+                input.required = true;
+                input.type = type;
+                input.placeholder = placeholder;
+                el.replaceWith(input);
+            };
+
+            typeSelect.addEventListener('change', updateFields);
+            updateFields();
+        });
+    </script>
+    <script src="../starter/script.js"></script>
+</body>
+</html>
