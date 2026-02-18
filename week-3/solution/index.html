@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Cursos en Línea</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Sistema de Gestión de Cursos</h1>
+            <div id="stats" class="stats-grid">
+                <!-- Estadísticas cargadas por JS -->
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="admin-section">
+            <div class="card">
+                <h2>Registrar Nuevo Curso</h2>
+                <form id="item-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Nombre del Curso</label>
+                            <input type="text" id="name" name="name" placeholder="Ej: Master en JavaScript" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="instructor">Instructor</label>
+                            <input type="text" id="instructor" name="instructor" placeholder="Ej: Erick Galindo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Tipo de Curso</label>
+                            <select id="type" name="type" required>
+                                <option value="VideoCourse">Curso en Video</option>
+                                <option value="LiveCourse">Clase en Vivo</option>
+                                <option value="Workshop">Workshop Práctico</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Duración (Horas)</label>
+                            <input type="number" id="duration" name="duration" min="1" step="0.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label id="label-extra1" for="extra1">Resolución</label>
+                            <input type="text" id="extra1" name="extra1" required>
+                        </div>
+                        <div class="form-group" id="extra2-container">
+                            <label id="label-extra2" for="extra2">¿Tiene Subtítulos?</label>
+                            <select id="extra2" name="extra2" required>
+                                <option value="true">Sí</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Agregar Curso</button>
+                </form>
+            </div>
+
+            <div class="card filters-card">
+                <h2>Filtros y Búsqueda</h2>
+                <div class="filters-grid">
+                    <div class="form-group">
+                        <label for="search-input">Buscar por nombre</label>
+                        <input type="text" id="search-input" placeholder="Buscar curso...">
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-type">Filtrar por tipo</label>
+                        <select id="filter-type">
+                            <option value="all">Todos los tipos</option>
+                            <option value="VideoCourse">Cursos en Video</option>
+                            <option value="LiveCourse">Clases en Vivo</option>
+                            <option value="Workshop">Workshops</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-status">Estado del Curso</label>
+                        <select id="filter-status">
+                            <option value="all">Todos</option>
+                            <option value="active">Disponibles</option>
+                            <option value="inactive">No Disponibles</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="list-section">
+            <h2>Catálogo de Cursos</h2>
+            <div id="item-list" class="items-grid">
+                <!-- Cursos cargados por JS -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const typeSelect = document.getElementById('type');
+            const labelExtra1 = document.getElementById('label-extra1');
+            const labelExtra2 = document.getElementById('label-extra2');
+            const inputExtra1 = document.getElementById('extra1');
+            const extra2Container = document.getElementById('extra2-container');
+
+            const updateFields = () => {
+                const type = typeSelect.value;
+                const currentExtra2 = document.getElementById('extra2');
+
+                if (type === 'VideoCourse') {
+                    labelExtra1.textContent = 'Resolución';
+                    inputExtra1.type = 'text';
+                    inputExtra1.placeholder = 'Ej: 1080p';
+                    labelExtra2.textContent = '¿Tiene Subtítulos?';
+                    renderSelectExtra2(currentExtra2, [['true', 'Sí'], ['false', 'No']]);
+                } else if (type === 'LiveCourse') {
+                    labelExtra1.textContent = 'Plataforma';
+                    inputExtra1.type = 'text';
+                    inputExtra1.placeholder = 'Ej: Zoom';
+                    labelExtra2.textContent = 'Capacidad Máxima';
+                    renderInputExtra2(currentExtra2, 'number', 'Ej: 50');
+                } else if (type === 'Workshop') {
+                    labelExtra1.textContent = 'Intensidad';
+                    inputExtra1.type = 'text';
+                    inputExtra1.placeholder = 'Ej: Alta';
+                    labelExtra2.textContent = '¿Incluye Material?';
+                    renderSelectExtra2(currentExtra2, [['true', 'Sí'], ['false', 'No']]);
+                }
+            };
+
+            const renderSelectExtra2 = (el, options) => {
+                if (el.tagName === 'SELECT') {
+                    el.innerHTML = options.map(opt => `<option value="${opt[0]}">${opt[1]}</option>`).join('');
+                    return;
+                }
+                const select = document.createElement('select');
+                select.id = 'extra2';
+                select.name = 'extra2';
+                select.required = true;
+                select.innerHTML = options.map(opt => `<option value="${opt[0]}">${opt[1]}</option>`).join('');
+                el.replaceWith(select);
+            };
+
+            const renderInputExtra2 = (el, type, placeholder) => {
+                if (el.tagName === 'INPUT') {
+                    el.type = type;
+                    el.placeholder = placeholder;
+                    return;
+                }
+                const input = document.createElement('input');
+                input.id = 'extra2';
+                input.name = 'extra2';
+                input.required = true;
+                input.type = type;
+                input.placeholder = placeholder;
+                el.replaceWith(input);
+            };
+
+            typeSelect.addEventListener('change', updateFields);
+            updateFields();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
